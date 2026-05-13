@@ -27,13 +27,25 @@ function revealOnScroll() {
 window.addEventListener("scroll", revealOnScroll);
 window.addEventListener("load", revealOnScroll);
 
+const emailJsUserId = "YOUR_USER_ID"; // Replace with your EmailJS user ID
+const emailJsServiceId = "YOUR_SERVICE_ID"; // Replace with your EmailJS service ID
+const emailJsTemplateId = "YOUR_TEMPLATE_ID"; // Replace with your EmailJS template ID
+
 // Initialize EmailJS
 (function() {
-  emailjs.init("YOUR_USER_ID"); // Replace with your EmailJS user ID
+  if (emailJsUserId.includes("YOUR_")) {
+    console.warn("EmailJS user ID is not configured. Update script.js with your EmailJS user ID.");
+  }
+  emailjs.init(emailJsUserId);
 })();
 
 function sendMessage(event) {
   event.preventDefault();
+
+  if (emailJsUserId.includes("YOUR_") || emailJsServiceId.includes("YOUR_") || emailJsTemplateId.includes("YOUR_")) {
+    document.getElementById("formStatus").textContent = "Email service not configured yet. Update EmailJS IDs in script.js.";
+    return;
+  }
 
   const templateParams = {
     from_name: document.getElementById("name").value,
@@ -46,7 +58,7 @@ function sendMessage(event) {
 
   document.getElementById("formStatus").textContent = "Sending...";
 
-  emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", templateParams)
+  emailjs.send(emailJsServiceId, emailJsTemplateId, templateParams)
     .then(function(response) {
       document.getElementById("formStatus").textContent = "Message sent successfully!";
       document.querySelector(".contact-form").reset();
