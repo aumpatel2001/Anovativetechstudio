@@ -27,21 +27,31 @@ function revealOnScroll() {
 window.addEventListener("scroll", revealOnScroll);
 window.addEventListener("load", revealOnScroll);
 
+// Initialize EmailJS
+(function() {
+  emailjs.init("YOUR_USER_ID"); // Replace with your EmailJS user ID
+})();
+
 function sendMessage(event) {
   event.preventDefault();
 
-  const businessEmail = "aumpatidar18@gmail.com";
+  const templateParams = {
+    from_name: document.getElementById("name").value,
+    from_email: document.getElementById("email").value,
+    phone: document.getElementById("phone").value,
+    service: document.getElementById("service").value,
+    message: document.getElementById("message").value,
+    to_email: "aumpatidar18@gmail.com"
+  };
 
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const phone = document.getElementById("phone").value;
-  const service = document.getElementById("service").value;
-  const message = document.getElementById("message").value;
+  document.getElementById("formStatus").textContent = "Sending...";
 
-  const subject = `New Inquiry - ${service}`;
-  const body =
-    `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\n\nMessage:\n${message}`;
-
-  document.getElementById("formStatus").textContent = "Thank you! Your email app is opening now.";
-  window.location.href = `mailto:${businessEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", templateParams)
+    .then(function(response) {
+      document.getElementById("formStatus").textContent = "Message sent successfully!";
+      document.querySelector(".contact-form").reset();
+    }, function(error) {
+      document.getElementById("formStatus").textContent = "Failed to send message. Please try again.";
+      console.error("EmailJS error:", error);
+    });
 }
