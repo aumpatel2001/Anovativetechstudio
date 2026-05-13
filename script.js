@@ -30,7 +30,7 @@ window.addEventListener("load", revealOnScroll);
 function sendMessage(event) {
   event.preventDefault();
 
-  const businessEmail = "contact@anovativetechstudio.com";
+  const businessEmail = "aumpatidar18@gmail.com";
 
   const name = document.getElementById("name").value;
   const email = document.getElementById("email").value;
